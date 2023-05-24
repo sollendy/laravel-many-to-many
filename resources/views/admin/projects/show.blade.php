@@ -4,6 +4,7 @@
 
 <div class="main pt-5">
   <h1>{{$project->title}}</h1>
+  <h6>tipo: {{$project->type->name ?? 'nessuna'}}</h6>
   <hr>
   <p>
     {{$project->content}}

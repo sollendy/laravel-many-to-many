@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +29,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin/projects/create');
+        $types = Type::all();
+        // dd($types);
+        return view('admin/projects/create', compact("types"));
     }
     //Str::slug($formData['title'], '-')
     /**
@@ -56,6 +59,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        // dd($project->type);
         return view('admin/projects/show', compact('project'));
     }
 
