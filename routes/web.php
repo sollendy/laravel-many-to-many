@@ -43,7 +43,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::resource('types', TypeController::class)->parameters(['types' => 'type:slug']);
 
-    Route::get('/', [DashboardController::class, 'home'])->name('dashboard.home');
+    Route::get('/', [DashboardController::class, 'home'])->name('home');
 });
 
 
