@@ -43,11 +43,17 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $this->validation($request);
+
         $formData = $request->all();
+
         $newProject = new Project();
+
         $newProject->slug = Str::slug($formData["title"], "-");
+
         $newProject->fill($formData);
+
         $newProject->save();
+
         return redirect()->route('admin.projects.show', ["project" => $newProject->slug]);
     }
 
@@ -71,7 +77,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view("admin/projects/edit", compact("project"));
+        $types = Type::all();
+
+        return view("admin/projects/edit", compact("project", "types"));
     }
 
     /**
@@ -126,12 +134,14 @@ class ProjectController extends Controller
            // qui ci dobbiamo inserire un array di regole (quelle che abbiamo usato sino a prima)
            'title' => 'required|max:12|min:4',
            'content' => 'required|max:1500',
+           'type_id' => 'nullable|exists:types,id',
        ], [
             'title.required' => 'Guarda compare, un titolo me lo devi dare.',
             'title.max' => 'Il titolo non deve essere più lungo di 10 caratteri',
             'title.min' => 'Il titolo non deve essere più corto di 2 caratteri',
             "content.required" => "come speri di vendere sto progetto se non dici manco una parola a riguardo?",
             "content.max" => "se scrivi più di 1500 caratteri ti sei già addormentato.",
+            'type_id.exists' => 'Il tipo noi lo vogliamo, altrimenti cambia sito.',
        ])->validate();
 
        // importante, visto che siamo in una funzione, dobbiamo restituire un valore, il validator gestisce questo campo e in caso trovasse un errore farebbe
