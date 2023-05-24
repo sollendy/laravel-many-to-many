@@ -113,8 +113,8 @@ function routeNameContains($string) {
                         Post
                     </div>
                     <div class="list-group list-group-flush">
-                        <a href="{{route('admin.projects.index')}}" class="list-group-item list-group-item-action {{routeNameContains('projects.index') ? 'active' : ''}}">Tutti i post</a>
-                        <a href="{{route('admin.projects.create')}}" class="list-group-item list-group-item-action {{routeNameContains('projects.create') ? 'active' : ''}}">Aggiungi un post</a>
+                        <a href="{{route('admin.projects.index')}}" class="list-group-item list-group-item-action {{routeNameContains('projects.index') ? 'active' : ''}}">Tutti i progetti</a>
+                        <a href="{{route('admin.projects.create')}}" class="list-group-item list-group-item-action {{routeNameContains('projects.create') ? 'active' : ''}}">Aggiungi un progetto</a>
                     </div>
                 </div>
         
@@ -123,8 +123,8 @@ function routeNameContains($string) {
                         Categorie
                     </div>
                     <div class="list-group list-group-flush">
-                        <a href="{{route('admin.types.index')}}" class="list-group-item list-group-item-action {{routeNameContains('types.index') ? 'active' : ''}}">Tutte le categorie</a>
-                        <a href="{{route('admin.types.create')}}" class="list-group-item list-group-item-action {{routeNameContains('types.create') ? 'active' : ''}}">Aggiungi una categoria</a>
+                        <a href="{{route('admin.types.index')}}" class="list-group-item list-group-item-action {{routeNameContains('types.index') ? 'active' : ''}}">Tutte i Tipi</a>
+                        <a href="{{route('admin.types.create')}}" class="list-group-item list-group-item-action {{routeNameContains('types.create') ? 'active' : ''}}">Aggiungi un tipo</a>
                     </div>
                 </div>
             </aside>
