@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,7 +32,8 @@ class ProjectController extends Controller
     {
         $types = Type::all();
         // dd($types);
-        return view('admin/projects/create', compact("types"));
+        $technologies = Technology::all();
+        return view('admin/projects/create', compact("types", 'technologies'));
     }
     //Str::slug($formData['title'], '-')
     /**
@@ -53,6 +55,8 @@ class ProjectController extends Controller
         $newProject->fill($formData);
 
         $newProject->save();
+
+        $newProject->technologies()->attach($formData['technologies']);
 
         return redirect()->route('admin.projects.show', ["project" => $newProject->slug]);
     }
@@ -79,7 +83,9 @@ class ProjectController extends Controller
     {
         $types = Type::all();
 
-        return view("admin/projects/edit", compact("project", "types"));
+        $technologies = Technology::all();
+
+        return view("admin/projects/edit", compact("project", "types", 'technologies'));
     }
 
     /**
@@ -92,9 +98,19 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $this->validation($request);
+
         $formData = $request->all();
+
         $project->update($formData);
+
+        if(array_key_exists('technologies', $formData)) {
+            $project->technologies()->sync($formData['technologies']);
+        } else {
+            $project->technologies()->detach();
+        }
+
         $project->save();
+
         return redirect()->route("admin.projects.show", $project->slug);
     }
 
@@ -135,6 +151,7 @@ class ProjectController extends Controller
            'title' => 'required|max:12|min:4',
            'content' => 'required|max:1500',
            'type_id' => 'nullable|exists:types,id',
+           'technologies' => 'exists:technologies,id',
        ], [
             'title.required' => 'Guarda compare, un titolo me lo devi dare.',
             'title.max' => 'Il titolo non deve essere più lungo di 10 caratteri',
@@ -142,6 +159,7 @@ class ProjectController extends Controller
             "content.required" => "come speri di vendere sto progetto se non dici manco una parola a riguardo?",
             "content.max" => "se scrivi più di 1500 caratteri ti sei già addormentato.",
             'type_id.exists' => 'Il tipo noi lo vogliamo, altrimenti cambia sito.',
+            'technologies.exists' => "La tecnologia dev'essere più onnipresente di ogni divinità",
        ])->validate();
 
        // importante, visto che siamo in una funzione, dobbiamo restituire un valore, il validator gestisce questo campo e in caso trovasse un errore farebbe
