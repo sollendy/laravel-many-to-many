@@ -2,9 +2,12 @@
 
 @section('content')
 
-<div class="main pt-5">
+<div class="main px-3 pt-5">
   <h1>{{$project->title}}</h1>
-  <h6>tipo: {{$project->type->name ?? 'nessuno'}}</h6>
+  <h5>tipo: {{$project->type->name ?? 'nessuno'}}</h5>
+  <h6>Tecnologie: @foreach ($project->technologies as $technology)
+    {{$technology->name . ' '}}
+@endforeach</h6>
   <hr>
   <p>
     {{$project->content}}
