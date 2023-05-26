@@ -125,6 +125,7 @@ class ProjectController extends Controller
         $project->delete();
         return redirect()->route("admin.projects.index");
     }
+
     private function validation($request) {
         // controlla che i parametri del form rispettino le regole che indichiamo
        // $request->validate([
@@ -151,7 +152,7 @@ class ProjectController extends Controller
            'title' => 'required|max:12|min:4',
            'content' => 'required|max:1500',
            'type_id' => 'nullable|exists:types,id',
-           'technologies' => 'exists:technologies,id',
+           'technologies' => 'required|array|exists:technologies,id',
        ], [
             'title.required' => 'Guarda compare, un titolo me lo devi dare.',
             'title.max' => 'Il titolo non deve essere più lungo di 10 caratteri',
@@ -159,7 +160,9 @@ class ProjectController extends Controller
             "content.required" => "come speri di vendere sto progetto se non dici manco una parola a riguardo?",
             "content.max" => "se scrivi più di 1500 caratteri ti sei già addormentato.",
             'type_id.exists' => 'Il tipo noi lo vogliamo, altrimenti cambia sito.',
+            'technologies.required' => "La tecnologia dev'essere più onnipresente di ogni divinità",
             'technologies.exists' => "La tecnologia dev'essere più onnipresente di ogni divinità",
+
        ])->validate();
 
        // importante, visto che siamo in una funzione, dobbiamo restituire un valore, il validator gestisce questo campo e in caso trovasse un errore farebbe

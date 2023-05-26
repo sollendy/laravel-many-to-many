@@ -1,5 +1,6 @@
 @extends('layouts/admin')
 @section('content')
+
 <h1 class="text-center">Aggiungi Progetto</h1>
 <div class="container w-50">
     <form action="{{route('admin.projects.store')}}" method="POST" class="py-5">
@@ -38,15 +39,16 @@
   
         <div class="form-check">
           @foreach($technologies as $technology)
-            <input id="technology_{{$technology->id}}" name="technologies[]" type="checkbox" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>
+            <input class="@error('technology') is-invalid @enderror" id="technology_{{$technology->id}}" name="technologies[]" type="checkbox" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>
             <label for="technology_{{$technology->id}}">{{$technology->name}}</label>
           @endforeach
         </div>
-        @error('technologies') 
+        @error("technologies")
+        
         <div class="text-danger">
           {{$message}}
         </div>
-        
+
         @enderror
   
       </div>
