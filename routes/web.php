@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TechnologyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,9 +40,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function() {
 
     // rotte resource dei project
-    Route::resource('projects', ProjectController::class)->parameters(['projects' => 'project']);
+    Route::resource('projects', ProjectController::class)->parameters(['projects' => 'project:slug']);
 
     Route::resource('types', TypeController::class)->parameters(['types' => 'type:slug']);
+
+    Route::resource('technologies', TechnologyController::class)->parameters(['technologies' => 'technology:slug']);
 
     Route::get('/', [DashboardController::class, 'home'])->name('home');
 });

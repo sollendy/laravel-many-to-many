@@ -123,8 +123,18 @@ function routeNameContains($string) {
                         Categorie
                     </div>
                     <div class="list-group list-group-flush">
-                        <a href="{{route('admin.types.index')}}" class="list-group-item list-group-item-action {{routeNameContains('types.index') ? 'active' : ''}}">Tutte i Tipi</a>
+                        <a href="{{route('admin.types.index')}}" class="list-group-item list-group-item-action {{routeNameContains('types.index') ? 'active' : ''}}">Tutti i Tipi</a>
                         <a href="{{route('admin.types.create')}}" class="list-group-item list-group-item-action {{routeNameContains('types.create') ? 'active' : ''}}">Aggiungi un tipo</a>
+                    </div>
+                </div>
+
+                <div class="card {{ routeNameContains('technologies.') ? 'border-primary' : '' }}">
+                    <div class="card-header {{ routeNameContains('technologies.') ? 'text-primary' : '' }}">
+                        Tecnologie
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="{{route('admin.technologies.index')}}" class="list-group-item list-group-item-action {{routeNameContains('technologies.index') ? 'active' : ''}}">Tutte le tecnologie</a>
+                        <a href="{{route('admin.technologies.create')}}" class="list-group-item list-group-item-action {{routeNameContains('technologies.create') ? 'active' : ''}}">Aggiungi Tecnologia</a>
                     </div>
                 </div>
             </aside>

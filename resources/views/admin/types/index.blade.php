@@ -11,7 +11,7 @@
         <th>Nome</th>
         <th>Descrizione</th>
         <th>Slug</th>
-        <th>N° articoli</th>
+        <th>Progetti Correlati</th>
         <th></th>
       </thead>
 
