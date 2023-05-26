@@ -37,7 +37,10 @@ Route::middleware('auth')->group(function () {
 // il nome delle rotte inizi con "admin."
 // vorrei se possibile fare questo in automatico, senza specificarlo per ogni nuova rotta
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function() {
+Route::middleware(['auth', 'verified'])
+->prefix('admin')
+->name('admin.')
+->group(function() {
 
     // rotte resource dei project
     Route::resource('projects', ProjectController::class)->parameters(['projects' => 'project:slug']);
