@@ -43,14 +43,14 @@ Route::middleware(['auth', 'verified'])
 ->group(function() {
 
     // rotte resource dei project
+    Route::get('/', [DashboardController::class, 'home'])->name('home');
+
     Route::resource('projects', ProjectController::class)->parameters(['projects' => 'project:slug']);
 
     Route::resource('types', TypeController::class)->parameters(['types' => 'type:slug']);
 
     Route::resource('technologies', TechnologyController::class)->parameters(['technologies' => 'technology:slug']);
 
-    Route::get('/', [DashboardController::class, 'home'])->name('home');
 });
-
 
 require __DIR__.'/auth.php';

@@ -19,6 +19,8 @@ class TechnologyController extends Controller
     {
         $technologies = Technology::all();
 
+        // dd($technologies);
+
         return view('admin.technologies.index', compact('technologies'));
     }
 

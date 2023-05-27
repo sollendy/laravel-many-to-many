@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,11 +49,21 @@ class ProjectController extends Controller
 
         $formData = $request->all();
 
+        // dd($formData);
+
         $newProject = new Project();
+        
+        if($request->hasFile('cover_image')) {
+            // Storage::put crea la cartella specificata in caso non esista
+            $path = Storage::put('project_images', $request->cover_image);
+            // dd($path);
+            // memorizzo il path dell'immagine salvata nell'array delle informazioni pronte da salvare nel db
+            $formData['cover_image'] = $path;
+        }
+        
+        $newProject->fill($formData);
 
         $newProject->slug = Str::slug($formData["title"], "-");
-
-        $newProject->fill($formData);
 
         $newProject->save();
 
@@ -97,17 +108,37 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        
+        $formData = $request->all();
+        
         $this->validation($request);
 
-        $formData = $request->all();
+        if($request->hasFile('cover_image')) {
 
+            if($project->cover_image) {
+                // cancelliamo la vecchia immagine
+                Storage::delete($project->cover_image);
+            }
+
+            // salviamo la nuova
+            // Storage::put crea la cartella specificata in caso non esista
+            $path = Storage::put('project_images', $request->cover_image);
+            
+            // memorizzo il path dell'immagine salvata nell'array delle informazioni pronte da salvare nel db
+            $formData['cover_image'] = $path;
+
+        }
+
+        $project->slug = Str::slug($formData['title'], '-');
+        
         $project->update($formData);
-
+        
         if(array_key_exists('technologies', $formData)) {
             $project->technologies()->sync($formData['technologies']);
         } else {
             $project->technologies()->detach();
         }
+
 
         $project->save();
 
@@ -123,6 +154,11 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
+
+        if($project->cover_image) {
+            Storage::delete($project->cover_image);
+        }
+
         return redirect()->route("admin.projects.index");
     }
 
@@ -153,6 +189,7 @@ class ProjectController extends Controller
            'content' => 'required|max:1500',
            'type_id' => 'nullable|exists:types,id',
            'technologies' => 'required|array|exists:technologies,id',
+           'cover_image' => 'nullable|image|max:4096',
        ], [
             'title.required' => 'Guarda compare, un titolo me lo devi dare.',
             'title.max' => 'Il titolo non deve essere più lungo di 10 caratteri',
@@ -160,8 +197,10 @@ class ProjectController extends Controller
             "content.required" => "come speri di vendere sto progetto se non dici manco una parola a riguardo?",
             "content.max" => "se scrivi più di 1500 caratteri ti sei già addormentato.",
             'type_id.exists' => 'Il tipo noi lo vogliamo, altrimenti cambia sito.',
-            'technologies.required' => "La tecnologia dev'essere più onnipresente di ogni divinità",
-            'technologies.exists' => "La tecnologia dev'essere più onnipresente di ogni divinità",
+            'technologies.required' => "La tecnologia dev'essere più onnipresente di ogni divinità.",
+            'technologies.exists' => "La tecnologia dev'essere più onnipresente di ogni divinità.",
+            'cover_image.max' => "Ti chiedo un'immagine e non la cappella sistina",
+            'cover_image.image' => "Ti sei dimenticato cosa sia un'immagine?",
 
        ])->validate();
 
