@@ -2,6 +2,11 @@
 
 @section('content')
 
+<div class="container">
+  <div class="text-center pt-3">
+    <img src="{{ asset('storage/' . $project->cover_image) }}" alt="" class="w-50">
+  </div>
+
 <div class="main px-3 pt-5">
   <h1>{{$project->title}}</h1>
   <h5>tipo: {{$project->type->name ?? 'nessuno'}}</h5>
